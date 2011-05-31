@@ -160,19 +160,7 @@
             position = {
                 x: element.attr("offsetLeft"),
                 y: element.attr("offsetTop")
-            },
-            cover = $("<div class='paddle-cover'></div>").
-                appendTo(element).
-                css({
-                    'position': 'absolute',
-                    'top': 0,
-                    'left': 0,
-                    'z-index': element.css('z-index') + 1,
-                    'height': '100%', 
-                    'width': '100%',
-                    'background-color': element.css('color'),
-                    'display': 'none'
-                });
+            };
 
         element.attr('id', id);
 
@@ -214,11 +202,14 @@
                     "top": center.y - (height/2), 
                     "left": center.x
                 }, 500, function () {
-                    cover.fadeIn(500, function () {
-                        element.animate({
-                            "height": height, 
-                            "width": width, 
-                        }, 200, callback);
+                    element.fadeOut(500, function () {
+                        element.css('background-color', element.css('color'));
+                        element.fadeIn(100, function () {
+                            element.animate({
+                                "height": height, 
+                                "width": width, 
+                            }, 200, callback);
+                        });
                     });
                 });
         
