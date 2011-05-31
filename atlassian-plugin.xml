@@ -1,0 +1,13 @@
+<atlassian-plugin key="atlas-pong" plugins-version="2">
+    <plugin-info>
+        <version>1.0</version>
+        <name>Atlas Pong</name>
+        <description>Pong easter egg.</description>
+    </plugin-info>
+
+    <scoped-web-resource key="atlas-pong">
+        <resource type="download" name="main.js" location="js/atlas-pong/main.js" />
+        <resource type="download" name="main.css" location="css/main.css" />
+        <context>atl.general</context>
+    </scoped-web-resource>
+</atlassian-plugin>
