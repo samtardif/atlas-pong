@@ -86,3 +86,7 @@
     height: 10px;
     z-index: 1000;
 }
+
+.spacer {
+    clear: both;
+}

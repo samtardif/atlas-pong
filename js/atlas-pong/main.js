@@ -38,7 +38,7 @@
                 $(document).keydown(function (ev) {
                     if (ev.keyCode === 87) { //w
                         for_paddle.move(y_bounds, -1);
-                    } else if (ev.keyCode === 83) { //s
+                    } else if (ev.keyCode === 65) { //a
                         for_paddle.move(y_bounds, +1);
                     }
                 });
@@ -160,7 +160,19 @@
             position = {
                 x: element.attr("offsetLeft"),
                 y: element.attr("offsetTop")
-            };
+            },
+            cover = $("<div class='paddle-cover'></div>").
+                appendTo(element).
+                css({
+                    'position': 'absolute',
+                    'top': 0,
+                    'left': 0,
+                    'z-index': element.css('z-index') + 1,
+                    'height': '100%', 
+                    'width': '100%',
+                    'background-color': element.css('color'),
+                    'display': 'none'
+                });
 
         element.attr('id', id);
 
@@ -201,12 +213,14 @@
                     "font-size": "20px", 
                     "top": center.y - (height/2), 
                     "left": center.x
-                }, 500).animate({
-                    'background-color': element.css('color')
-                }, 200).animate({
-                    "height": height, 
-                    "width": width, 
-                }, 200, callback);
+                }, 500, function () {
+                    cover.fadeIn(500, function () {
+                        element.animate({
+                            "height": height, 
+                            "width": width, 
+                        }, 200, callback);
+                    });
+                });
         
                 position.x = center.x;
                 position.y = center.y - (height/2);
@@ -378,12 +392,14 @@
             countdown = Countdown($("<div class='countdown'>3</div>").appendTo($body), make_shit_happen),
 
             player_paddle_init_callback = function () {
+                console.log('player paddle');
                 backboard.register_keybindings(player_paddle);
                 countdown.set_center(screen_center);
                 countdown.start(3);
             },
 
             ai_paddle_init_callback = function () {
+                console.log('ai paddle');
                 player_paddle.init_to({y: screen_center.y, x: backboard.bounds().left + 15}, player_paddle_init_callback);
             },
 
@@ -416,33 +432,32 @@
                 $("<div class='dimmer'></div>").appendTo($body).fadeIn('slow', function () {
                     backboard.init_to(screen_center, backboard_init_callback);
                 });
-            },
-                           
-
+            }
         };
     };
 
-
-
-    $(function () {
-        (function () {
-            var title_element = $("#title-text"),
-                anchor = title_element.find("a"),
-                title_text = anchor.text().split(" "),
-                fg_color = anchor.css("color");
-
-            title_element.css("color", fg_color);
-            title_element.empty();
-            for (var i = 0; i < title_text.length; i++) {
-                var span = $("<span>" + title_text[i] + "</span>");
-                title_element.append(span);
-            }
-        })();
-
+    $(document).ready(function () {
         var $body = $('body'),
-            pong = Pong($body),
             trigger = $("<div id='pong-trigger'></div>").appendTo($body);
 
-        trigger.click(pong.init_game);
+        trigger.click(function () {
+            (function () {
+                var title_element = $("#title-text"),
+                    anchor = title_element.find("a"),
+                    title_text = (anchor.length > 0 ? anchor.text() : title_element.text()).replace(/^\s+|\s+$/g, '').split(" ");
+
+                $("<div class='spacer'></div>").insertAfter(title_element);
+
+                title_element.css("color", anchor.css("color"));
+                title_element.empty();
+                for (var i = 0; i < title_text.length; i++) {
+                    var span = $("<span>" + title_text[i] + "</span>");
+                    title_element.append(span);
+                }
+            })();
+
+            var pong = Pong($body);
+            pong.init_game();
+        });
     });
-})(require('speakeasy/jquery').jQuery);
+})(AJS.$);
