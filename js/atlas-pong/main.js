@@ -36,10 +36,12 @@
                 };
 
                 $(document).keydown(function (ev) {
-                    if (ev.keyCode === 87) { //w
+                    if (ev.keyCode === 38) { //w
                         for_paddle.move(y_bounds, -1);
-                    } else if (ev.keyCode === 65) { //a
+                        return false;
+                    } else if (ev.keyCode === 40) { //a
                         for_paddle.move(y_bounds, +1);
+                        return false;
                     }
                 });
             }
@@ -125,11 +127,11 @@
                 };
 
                 if (Math.floor(Math.random() * 3) === 1) {
-                    if (Math.floor(Math.random() * 3) === 1) {
-                        update('dy');
-                    } else {
-                        update('dx');
-                    }
+                    update('dy');
+                }
+                    
+                if (Math.floor(Math.random() * 3) === 1) {
+                    update('dx');
                 }
             },
 
@@ -380,7 +382,20 @@
                 }
             },
 
-            countdown = Countdown($("<div class='countdown'>3</div>").appendTo($body), make_shit_happen),
+            show_instructions = function () {
+                $("<div id='pong-instructions'><ol><li>Use Up/Down for movement</li><li>Click the ball to reset</li><li>Don't search for an ending</li></ol></div>").
+                    appendTo($("#backboard")).
+                    show();
+            },
+
+            hide_instructions = function () {
+                $("#pong-instructions").hide();
+            },
+
+            countdown = Countdown($("<div class='countdown'>3</div>").appendTo($body), function () {
+                hide_instructions();
+                make_shit_happen();
+            }),
 
             player_paddle_init_callback = function () {
                 console.log('player paddle');
@@ -407,6 +422,7 @@
                         y: board_bounds.top + (board_height/2)
                     };
 
+                show_instructions();
                 scoreboard.init_to({top: board_bounds.bottom, left: board_bounds.left}, board_width);
                 ball.init_to(screen_center, ball_init_callback);
             };
