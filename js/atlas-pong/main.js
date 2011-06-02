@@ -1,3 +1,9 @@
+/**
+ * Atlas Pong - a pong easter egg.
+ *
+ * @context atl.general
+ */
+
 (function ($) {
     var SPEEDS = {
             fast_motion: 33,
