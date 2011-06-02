@@ -120,9 +120,15 @@
 
             impart_spin: function () {
                 var update = function (direction) {
-                    motion[direction] += 10 * (motion[direction] / 10);
-                    if (Math.abs(motion[direction]) > 30) {
+                    var dx = (Math.floor(Math.random() * 2) === 0 ? 10 : -10),
+                        new_motion = Math.abs(motion[direction] + dx);
+
+                    if (new_motion > 30) {
                         motion[direction] = 30 * (motion[direction] > 0 ? 1 : -1);
+                    } else if (new_motion !== 0) {
+                        motion[direction] = new_motion;
+                    } else {
+                        motion[direction] = motion[direction] + (dx * -1);
                     }
                 };
 
@@ -398,14 +404,12 @@
             }),
 
             player_paddle_init_callback = function () {
-                console.log('player paddle');
                 backboard.register_keybindings(player_paddle);
                 countdown.set_center(screen_center);
                 countdown.start(3);
             },
 
             ai_paddle_init_callback = function () {
-                console.log('ai paddle');
                 player_paddle.init_to({y: screen_center.y, x: backboard.bounds().left + 15}, player_paddle_init_callback);
             },
 
