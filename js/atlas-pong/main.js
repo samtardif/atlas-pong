@@ -365,7 +365,7 @@
     var Pong = function ($body) {
         var screen_center = {x: $(window).width()/2, y: $(window).height()/2};
             backboard = Backboard($("<div id='backboard'></div>").appendTo($body), 800, 500),
-            ball = Ball($(".logo.global")),
+            ball = Ball($(".logo").first()),
             player_paddle = Paddle($("#title-text").find("span:first-child"), 'player-paddle'),
             ai_paddle = Paddle($("#title-text").find("span:first-child").next(), 'ai-paddle'),
             ai = AI(backboard, ball, ai_paddle),
