@@ -255,23 +255,26 @@
                     ball_bounds.top += ball_motion.dy;
                 }
 
-                var ball_y = ball_bounds.top;
+                var ball_y = ball_bounds.top,
+                    paddle_y;
 
-                if (ball_y < board_bounds.top) {
-                    ball_y = board_bounds.top + Math.abs(board_bounds.top - ball_y);
-                } else if (ball_y > board_bounds.bottom) {
-                    ball_y = board_bounds.bottom - (ball_y - board_bounds.bottom);
+                if (ball_bounds.top < board_bounds.top) {
+                    ball_y = board_bounds.top + Math.abs(board_bounds.top - ball_bounds.top);
+                } else if (ball_bounds.bottom > board_bounds.bottom) {
+                    ball_y = board_bounds.bottom - (ball_bounds.bottom - board_bounds.bottom);
                 }
 
-                if (ball_y + paddle.height() > max_y) {
-                    ball_y = max_y;
+                if (ball_y + ball.height() > max_y) {
+                    paddle_y = max_y;
                 } else if (ball_y < min_y) {
-                    ball_y = min_y;
+                    paddle_y = min_y;
+                } else {
+                    paddle_y = ball_y;
                 }
 
-                if (ball_y !== target) {
-                    paddle.move_to(ball_y, speed);
-                    target = ball_y;
+                if (paddle_y !== target) {
+                    paddle.move_to(paddle_y, speed);
+                    target = paddle_y;
                 } 
             },
             
@@ -356,9 +359,9 @@
                     ball.invert_dx();
                     ball.impart_spin();
                 } else {
-                    if (ball_bounds.left <= player_bounds.left) {
+                    if (ball.is_moving_left() && ball_bounds.left <= player_bounds.left) {
                         return -1;
-                    } else if (ball_bounds.right >= ai_bounds.right) {
+                    } else if (ball.is_moving_right() && ball_bounds.right >= ai_bounds.right) {
                         return 1;
                     }
                 }
