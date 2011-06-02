@@ -458,9 +458,15 @@
                     title_text = (anchor.length > 0 ? anchor.text() : title_element.text()).replace(/^\s+|\s+$/g, '').split(" ");
 
                 $("<div class='spacer'></div>").insertAfter(title_element);
-
                 title_element.css("color", anchor.css("color"));
                 title_element.empty();
+
+                if (title_text.length === 0) {
+                    title_text = ["Atlassian","Pong"];
+                } else if (title_text.length === 1) {
+                    title_text.push("Pong");
+                }
+
                 for (var i = 0; i < title_text.length; i++) {
                     var span = $("<span>" + title_text[i] + "</span>");
                     title_element.append(span);
