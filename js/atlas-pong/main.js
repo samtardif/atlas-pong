@@ -450,6 +450,15 @@
         return {
             init_game: function () {
                 $("<div class='dimmer'></div>").appendTo($body).fadeIn('slow', function () {
+//                    GIMME 1.6
+//                    var deferred = $.Deferred();
+//                    $.when(backboard.init_to(screen_center))
+//                        .pipe(function () { scoreboard.init_to({top: 0, left: 0}); })
+//                        .pipe(function () { ball.init_to(screen_center); });
+//                        .pipe(ball.init_to(screen_center))
+//                        .pipe(ai_paddle.init_to(screen_center))
+//                        .pipe(player_paddle.init_to(screen_center));
+
                     backboard.init_to(screen_center, backboard_init_callback);
                 });
             }
